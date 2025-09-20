@@ -34,9 +34,7 @@ $host = "localhost";
 $usuario = "root"; // Altere se o seu usuário não for 'root'
 $senha = "";       // Altere se você tiver uma senha no MySQL
 $banco = "blog_db";
-...
 
-
-**Como Usar**
+Como usar
 Acesse http://localhost/blog/ em seu navegador para ver os posts.
 
