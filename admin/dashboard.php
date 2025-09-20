@@ -7,9 +7,14 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit;
 }
-
-echo "<h2>Bem-vindo, " . $_SESSION['usuario'] . "</h2>";
-echo "<a href='novo_post.php'>➕ Novo Post</a> | <a href='logout.php'>🚪 Sair</a><hr>";
+echo "<div class='dashboard-header'>";
+echo "<div class='dashboard-actions'>";
+echo "<a href='novo_post.php' class='button-link'>➕ Novo Post</a>";
+echo "<a href='gerenciar_categorias.php' class='button-link'>Gerenciar Categorias</a>";
+echo "<a href='logout.php' class='button-link secondary'>🚪 Sair</a>";
+echo "</div>";
+echo "</div>";
+echo "<hr>";
 
 $res = $conn->query("SELECT posts.id, posts.titulo, categorias.nome AS categoria FROM posts LEFT JOIN categorias ON posts.categoria_id = categorias.id ORDER BY posts.criado_em DESC");
 
@@ -20,8 +25,8 @@ while ($post = $res->fetch_assoc()) {
         <td>{$post['titulo']}</td>
         <td>{$post['categoria']}</td>
         <td>
-            <a href='editar_post.php?id={$post['id']}'>✏️ Editar</a> | 
-            <a href='deletar_post.php?id={$post['id']}' onclick=\"return confirm('Tem certeza que deseja excluir?');\">🗑️ Deletar</a>
+            <a href='editar_post.php?id={$post['id']}'> Editar</a> | 
+            <a href='deletar_post.php?id={$post['id']}' onclick=\"return confirm('Tem certeza que deseja excluir?');\"> Deletar</a>
         </td>
     </tr>";
 }

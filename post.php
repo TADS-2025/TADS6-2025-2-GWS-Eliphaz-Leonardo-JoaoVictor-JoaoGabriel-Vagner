@@ -26,19 +26,28 @@ $resComentarios = $conn->query($sqlComentarios);
 
 if ($resComentarios->num_rows > 0) {
     while ($comentario = $resComentarios->fetch_assoc()) {
-        echo "<p><strong>" . $comentario['autor'] . "</strong>: " . $comentario['conteudo'] . " <em>(" . $comentario['criado_em'] . ")</em></p>";
+        echo "<div class='comment-card'>";
+        echo "<p><strong>" . htmlspecialchars($comentario['autor']) . "</strong>: " . htmlspecialchars($comentario['conteudo']) . "</p>";
+        echo "<p class='comment-date'><em>" . $comentario['criado_em'] . "</em></p>";
+        echo "</div>";
     }
 } else {
     echo "<p>Sem comentários ainda.</p>";
 }
+?>
 
-echo "<h4>Adicionar Comentário</h4>";
-echo "<form method='post'>";
-echo "Nome: <input type='text' name='autor'><br>";
-echo "Comentário:<br><textarea name='conteudo'></textarea><br>";
-echo "<button type='submit'>Enviar</button>";
-echo "</form>";
+<h4>Adicionar Comentário</h4>
+<div class="form-container">
+    <form method="post">
+        <label for="autor">Nome:</label>
+        <input type="text" name="autor" id="autor" required>
+        <label for="conteudo">Comentário:</label>
+        <textarea name="conteudo" id="conteudo" required></textarea>
+        <button type="submit">Enviar</button>
+    </form>
+</div>
 
+<?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $autor = $conn->real_escape_string($_POST['autor']);
     $conteudo = $conn->real_escape_string($_POST['conteudo']);

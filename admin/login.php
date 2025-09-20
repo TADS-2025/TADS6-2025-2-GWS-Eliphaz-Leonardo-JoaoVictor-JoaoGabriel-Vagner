@@ -1,13 +1,13 @@
 <?php
 session_start();
 include '../includes/conexao.php';
+include '../includes/cabecalho.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'];
     $senha = $_POST['senha'];
 
-    // Usando prepared statement para evitar injeção de SQL
-    $sql = "SELECT senha FROM usuarios WHERE usuario = ?";
+        $sql = "SELECT senha FROM usuarios WHERE usuario = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $usuario);
     $stmt->execute();
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
-        // Verifica se a senha fornecida corresponde ao hash no banco de dados
+        
         if (password_verify($senha, $user['senha'])) {
             $_SESSION['usuario'] = $usuario;
             header("Location: dashboard.php");
@@ -30,8 +30,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<form method="post">
-    Usuário: <input type="text" name="usuario"><br>
-    Senha: <input type="password" name="senha"><br>
-    <button type="submit">Entrar</button>
-</form>
+<div class="login-container">
+    <h2>Login do Administrador</h2>
+    <form method="post">
+        <label for="usuario">Usuário:</label>
+        <input type="text" name="usuario" id="usuario" required>
+        <label for="senha">Senha:</label>
+        <input type="password" name="senha" id="senha" required>
+        <button type="submit">Entrar</button>
+    </form>
+</div>
+<?php
+include '../includes/rodape.php'; // Adicione esta linha
+?>
+
