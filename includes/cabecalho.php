@@ -9,7 +9,12 @@
 <header>
   <!-- Navbar -->
   <div class="navbar">
-    <h1 class="logo"><a href="/blog/index.php">Economia Blog</a></h1>
+    <h1 class="logo">
+  <a href="/blog/index.php">
+    <img src="img/ifinveste.png" alt="Logo IF-Investe" height="60">
+  </a>
+</h1>
+
     <nav>
       <a href="/blog/index.php">Início</a>
       <a href="/blog/admin/login.php">Admin</a>
