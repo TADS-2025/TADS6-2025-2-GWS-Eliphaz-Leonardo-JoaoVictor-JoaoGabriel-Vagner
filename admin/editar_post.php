@@ -3,73 +3,97 @@ session_start();
 include '../includes/conexao.php';
 include '../includes/cabecalho.php'; 
 
-if (!isset($_SESSION['usuario'])) {
+// Verificação de login
+if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit;
 }
 
-$id = intval($_GET['id']);
-$post = $conn->query("SELECT * FROM posts WHERE id=$id")->fetch_assoc();
-$res_categorias = $conn->query("SELECT * FROM categorias");
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+// Buscar post
+$sql = "SELECT * FROM posts WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$post = $stmt->get_result()->fetch_assoc();
+
+if (!$post) {
+    echo "<p style='color:red;'>Post não encontrado.</p>";
+    include '../includes/rodape.php';
+    exit;
+}
+
+// Buscar categorias
+$res_categorias = $conn->query("SELECT * FROM categorias ORDER BY nome ASC");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $titulo = $conn->real_escape_string($_POST['titulo']);
-    $conteudo = $conn->real_escape_string($_POST['conteudo']);
-    $autor = $conn->real_escape_string($_POST['autor']);
-    
-    // Verificação para garantir que a categoria existe e é um número inteiro
-    $categoria_id = isset($_POST['categoria']) ? intval($_POST['categoria']) : null;
+    $titulo = trim($_POST['titulo']);
+    $conteudo = trim($_POST['conteudo']);
+    $autor = $_SESSION['usuario_nome']; // pega do usuário logado
+    $categoria_id = intval($_POST['categoria']);
+    $imagem = $post['imagem']; // mantém a atual por padrão
 
-    if ($categoria_id === null || $categoria_id === 0) {
-        echo "<p style='color:red;'>Erro: A categoria selecionada é inválida.</p>";
+    // Upload da nova imagem (se enviada)
+    if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
+        $extensoesPermitidas = ['jpg', 'jpeg', 'png', 'gif'];
+        $ext = strtolower(pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION));
+
+        if (in_array($ext, $extensoesPermitidas)) {
+            $novoNome = uniqid("post_", true) . "." . $ext;
+            $destino = "../assets/img/" . $novoNome;
+
+            if (move_uploaded_file($_FILES['imagem']['tmp_name'], $destino)) {
+                $imagem = $novoNome;
+            }
+        }
+    }
+
+    // Atualizar post
+    $sql = "UPDATE posts SET titulo = ?, conteudo = ?, autor = ?, categoria_id = ?, imagem = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssisi", $titulo, $conteudo, $autor, $categoria_id, $imagem, $id);
+
+    if ($stmt->execute()) {
+        header("Location: dashboard.php?msg=atualizado");
+        exit;
     } else {
-        if (!empty($_FILES['imagem']['name'])) {
-            $imagem = $_FILES['imagem']['name'];
-            $tmp = $_FILES['imagem']['tmp_name'];
-            move_uploaded_file($tmp, "../assets/img/" . $imagem);
-            $sql = "UPDATE posts SET titulo='$titulo', conteudo='$conteudo', autor='$autor', categoria_id=$categoria_id, imagem='$imagem' WHERE id=$id";
-        } else {
-            $sql = "UPDATE posts SET titulo='$titulo', conteudo='$conteudo', autor='$autor', categoria_id=$categoria_id WHERE id=$id";
-        }
-
-        if ($conn->query($sql) === TRUE) {
-            header("Location: dashboard.php");
-            exit;
-        } else {
-            echo "<p style='color:red;'>Erro ao atualizar o post: " . $conn->error . "</p>";
-        }
+        echo "<p style='color:red;'>Erro ao atualizar o post: " . $conn->error . "</p>";
     }
 }
 ?>
 
-<h2>Editar Post</h2>
-<form method="post" enctype="multipart/form-data">
-    <label for="titulo">Título:</label>
-    <input type="text" name="titulo" id="titulo" value="<?php echo htmlspecialchars($post['titulo']); ?>"><br>
-    
-    <label for="conteudo">Conteúdo:</label><br>
-    <textarea name="conteudo" id="conteudo"><?php echo htmlspecialchars($post['conteudo']); ?></textarea><br>
-    
-    <label for="autor">Autor:</label>
-    <input type="text" name="autor" id="autor" value="<?php echo htmlspecialchars($post['autor']); ?>"><br>
-    
-    <label for="categoria">Categoria:</label>
-    <select name="categoria" id="categoria">
-        <?php
-        while ($cat = $res_categorias->fetch_assoc()) {
-            $sel = ($cat['id'] == $post['categoria_id']) ? "selected" : "";
-            echo "<option value='{$cat['id']}' $sel>{$cat['nome']}</option>";
-        }
-        ?>
-    </select><br>
-    
-    <p>Imagem atual: <img src="../assets/img/<?php echo htmlspecialchars($post['imagem']); ?>" width="100"></p>
-    
-    <label for="imagem">Nova Imagem:</label>
-    <input type="file" name="imagem" id="imagem"><br>
-    
-    <button type="submit">Salvar</button>
-</form>
+<main class="dashboard">
+    <h2>Editar Post</h2>
+    <form method="post" enctype="multipart/form-data">
+        <label for="titulo">Título:</label>
+        <input type="text" name="titulo" id="titulo" value="<?php echo htmlspecialchars($post['titulo']); ?>" required><br>
+        
+        <label for="conteudo">Conteúdo:</label><br>
+        <textarea name="conteudo" id="conteudo" rows="5" required><?php echo htmlspecialchars($post['conteudo']); ?></textarea><br>
+        
+        <label for="categoria">Categoria:</label>
+        <select name="categoria" id="categoria" required>
+            <?php while ($cat = $res_categorias->fetch_assoc()): ?>
+                <option value="<?php echo $cat['id']; ?>" <?php echo ($cat['id'] == $post['categoria_id']) ? "selected" : ""; ?>>
+                    <?php echo htmlspecialchars($cat['nome']); ?>
+                </option>
+            <?php endwhile; ?>
+        </select><br>
+        
+        <p>Imagem atual:</p>
+        <?php if (!empty($post['imagem'])): ?>
+            <img src="../assets/img/<?php echo htmlspecialchars($post['imagem']); ?>" width="120" alt="Imagem atual">
+        <?php else: ?>
+            <em>Nenhuma imagem</em>
+        <?php endif; ?>
+        
+        <br><label for="imagem">Nova Imagem:</label>
+        <input type="file" name="imagem" id="imagem" accept=".jpg,.jpeg,.png,.gif"><br><br>
+        
+        <button type="submit">💾 Salvar</button>
+    </form>
+</main>
 
 <?php
 include '../includes/rodape.php'; 

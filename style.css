@@ -1,28 +1,37 @@
-/* Reset básico */
+/* Variáveis de cor */
+:root {
+    --cor-primaria: #1B4332;
+    --cor-primaria-hover: #14532d;
+    --cor-fundo: #f5f5f5;
+    --cor-texto: #333;
+    --cor-branca: #fff;
+    --sombra: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Body */
 body {
-    background-color: #f5f5f5;
-    color: #333;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
     line-height: 1.6;
 }
 
 /* Cabeçalho */
 header {
-    background-color: #1B4332;
-    color: #fff;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branca);
     padding: 20px 0;
     text-align: center;
 }
 
 header h1 a {
-    color: #fff;
+    color: var(--cor-branca);
     text-decoration: none;
     font-size: 2em;
 }
@@ -32,7 +41,7 @@ header nav {
 }
 
 header nav a {
-    color: #fff;
+    color: var(--cor-branca);
     text-decoration: none;
     margin: 0 10px;
     font-weight: bold;
@@ -42,41 +51,47 @@ header nav a:hover {
     text-decoration: underline;
 }
 
-/* Main / Conteúdo */
+/* Main */
 main {
     max-width: 900px;
-    margin: 20px auto;
+    margin: 20px auto 60px;
     padding: 0 15px;
-    margin-bottom: 70px; /* Adicione esta linha para criar espaço acima do rodapé fixo */
 }
 
-
-/* Posts */
+/* Post */
 article {
-    background-color: #fff;
+    background-color: var(--cor-branca);
     padding: 20px;
     margin-bottom: 20px;
-    border-left: 5px solid #1B4332;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-left: 5px solid var(--cor-primaria);
+    box-shadow: var(--sombra);
+    border-radius: 6px;
+    transition: transform 0.2s ease;
+}
+
+article:hover {
+    transform: translateY(-2px);
 }
 
 article h2 {
-    color: #1B4332;
+    color: var(--cor-primaria);
     margin-bottom: 10px;
 }
 
 article img {
     max-width: 100%;
     margin: 10px 0;
+    border-radius: 4px;
 }
 
 /* Formulários */
 form {
-    background-color: #fff;
+    background-color: var(--cor-branca);
     padding: 20px;
-    border-left: 5px solid #1B4332;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-left: 5px solid var(--cor-primaria);
+    box-shadow: var(--sombra);
     margin-bottom: 20px;
+    border-radius: 6px;
 }
 
 form input[type="text"],
@@ -85,25 +100,27 @@ form textarea,
 form select {
     width: 100%;
     padding: 10px;
-    margin: 5px 0 15px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 1rem;
 }
 
 form button {
-    background-color: #1B4332;
-    color: #fff;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branca);
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 form button:hover {
-    background-color: #14532d;
+    background-color: var(--cor-primaria-hover);
 }
 
-/* Tabela do Dashboard */
+/* Tabelas */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -117,26 +134,28 @@ table th, table td {
 }
 
 table th {
-    background-color: #1B4332;
-    color: #fff;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branca);
 }
 
 table tr:hover {
     background-color: #e0f2f1;
 }
 
-/* Rodapé */
+/* Rodapé sticky */
 footer {
     text-align: center;
     padding: 15px;
-    background-color: #1B4332;
-    color: #fff;
-    margin-top: 40px;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branca);
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
 
-/* Links em geral */
+/* Links */
 a {
-    color: #1B4332;
+    color: var(--cor-primaria);
     text-decoration: none;
 }
 
@@ -144,30 +163,19 @@ a:hover {
     text-decoration: underline;
 }
 
-footer {
-    position: fixed; /* Fixa a posição do rodapé na janela de visualização */
-    bottom: 0;       /* Alinha a parte inferior do rodapé à parte inferior da janela */
-    width: 100%;     /* Garante que o rodapé ocupe a largura total da tela */
-    /* As outras propriedades de estilo do seu rodapé já estão no CSS */
-    text-align: center;
-    padding: 15px;
-    background-color: #1B4332;
-    color: #fff;
-}
-
-/* Estilo para a tela de login */
+/* Login */
 .login-container {
     max-width: 400px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: var(--cor-branca);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--sombra);
     text-align: center;
 }
 
 .login-container h2 {
-    color: #1B4332;
+    color: var(--cor-primaria);
     margin-bottom: 20px;
 }
 
@@ -177,237 +185,341 @@ footer {
     gap: 15px;
 }
 
-/* Centralizar e estilizar o cabeçalho do Dashboard */
-.dashboard-header {
-    text-align: center;
-    margin-bottom: 20px;
+/* Responsividade */
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    main {
+        padding: 0 10px;
+    }
+
+    article {
+        padding: 15px;
+    }
 }
 
-.dashboard-actions {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    gap: 15px; /* Adiciona espaço entre os botões */
+.dashboard {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: var(--sombra);
 }
 
-/* Estilo para os links como botões */
-.button-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #1B4332;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+.dashboard h2 {
+    margin-bottom: 15px;
+    color: var(--cor-primaria);
 }
 
-.button-link:hover {
-    background-color: #2D6A4F;
-}
-
-.button-link.secondary {
-    background-color: #6C757D;
-}
-
-.button-link.secondary:hover {
-    background-color: #5A6268;
-}
-
-/* Estilo para a tabela de posts no dashboard */
-.posts-table {
+.tabela-posts {
     width: 100%;
-    border-collapse: collapse; /* Remove o espaçamento entre as células */
-    margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden; /* Garante que a borda arredondada seja aplicada corretamente */
+    border-collapse: collapse;
+    margin-top: 15px;
 }
 
-/* Estilo para o cabeçalho da tabela */
-.posts-table th {
-    background-color: #1B4332;
-    color: #fff;
-    font-weight: bold;
-    padding: 12px 15px;
+.tabela-posts th, 
+.tabela-posts td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
     text-align: left;
 }
 
-/* Estilo para as células da tabela */
-.posts-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #ddd;
+.tabela-posts th {
+    background: var(--cor-primaria);
+    color: #fff;
 }
 
-/* Estilo para a última linha para remover a borda inferior */
-.posts-table tr:last-child td {
-    border-bottom: none;
+.tabela-posts tr:hover {
+    background: #f1f1f1;
 }
 
-/* Efeito de hover nas linhas da tabela */
-.posts-table tr:hover {
-    background-color: #f5f5f5;
-}
-
-/* Estilo para os links de ação na tabela */
-.posts-table td a {
-    text-decoration: none;
-    color: #1B4332;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
-
-.posts-table td a:hover {
-    color: #2D6A4F;
-}
-
-.comment-card {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    margin-bottom: 15px;
-}
-
-.comment-card p {
-    margin: 0 0 5px 0;
-}
-
-.comment-card strong {
-    color: #1B4332;
-}
-
-.comment-date {
-    font-size: 0.8em;
-    color: #6c757d;
-    text-align: right;
-    margin: 0;
-}
-
-/* Estilo para o formulário de comentários (mesmo estilo do login) */
-.form-container {
-    max-width: 600px;
+.blog-container {
+    max-width: 1100px;
     margin: 30px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
 }
 
-.form-container h4 {
-    color: #1B4332;
-    margin-bottom: 20px;
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
 }
 
-.form-container form {
+/* Card */
+.card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Layout de colunas para os posts */
-.post-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center; /* Centraliza os posts horizontalmente */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* Estilo para cada post */
-article {
-    flex: 1 1 200px; /* Ajusta o tamanho base para permitir 4 colunas */
-    background-color: #fff;
+.card-img img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+    flex: 1;
 }
 
-article:hover {
-    transform: translateY(-5px); /* Efeito de elevação ao passar o mouse */
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+.card-body h2 {
+    font-size: 1.4rem;
+    margin: 10px 0;
+    color: var(--cor-primaria);
 }
 
-article h2 a {
+.card-body h2 a {
+    color: inherit;
     text-decoration: none;
-    color: #1B4332;
-    transition: color 0.3s ease;
 }
 
-article h2 a:hover {
-    color: #2D6A4F;
+.card-body h2 a:hover {
     text-decoration: underline;
 }
 
-article img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 4px;
-    margin: 10px 0;
-    transition: transform 0.3s ease;
+.meta {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 10px;
 }
 
-article:hover img {
-    transform: scale(1.05); 
-}
-
-
-.admin-link {
-    font-size: 1.5em; 
-    margin: 0 10px;
+/* Badge de categoria */
+.badge {
+    display: inline-block;
+    background: #1B4332;
     color: #fff;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+/* Botão */
+.btn-read {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 14px;
+    background: var(--cor-primaria);
+    color: #fff;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+.btn-read:hover {
+    background: var(--cor-primaria-hover);
+}
+/* Paleta extendida */
+:root {
+    --cor-sucesso: #198754;
+    --cor-erro: #dc3545;
+    --cor-aviso: #ffc107;
+}
+
+/* Alerts (feedback de ações) */
+.alert {
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin: 15px 0;
+    font-weight: 500;
+}
+
+.alert-sucesso {
+    background: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+}
+
+.alert-erro {
+    background: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+}
+
+.alert-aviso {
+    background: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffecb5;
+}
+
+/* Botões de ação */
+.btn-action {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin: 0 2px;
     text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.btn-edit {
+    background: var(--cor-aviso);
+    color: #000;
+}
+
+.btn-edit:hover {
+    background: #e0a800;
+    color: #000;
+}
+
+.btn-delete {
+    background: var(--cor-erro);
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background: #bb2d3b;
+    color: #fff;
+}
+
+/* Responsividade extra */
+@media (max-width: 400px) {
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
+    .card-img img {
+        height: 150px;
+    }
+}
+
+/* Badge animada */
+.badge {
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.badge:hover {
+    transform: scale(1.05);
+}
+/* Página de post individual */
+.post-detalhe {
+    background: var(--cor-branca);
+    border-radius: 10px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.post-capa img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+}
+
+.post-conteudo {
+    padding: 25px;
+}
+
+.post-conteudo h1 {
+    font-size: 2rem;
+    margin: 15px 0;
+    color: var(--cor-primaria);
+}
+
+.post-texto {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-top: 20px;
+    color: var(--cor-texto);
+}
+
+.post-texto p {
+    margin-bottom: 15px;
+}
+
+.post-texto img {
+    max-width: 100%;
+    border-radius: 6px;
+    margin: 15px 0;
+}
+/* Navbar */
+.navbar {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo a {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--cor-branca);
+    text-decoration: none;
+}
+
+.navbar nav a {
+    margin-left: 20px;
+    font-weight: 500;
+    color: var(--cor-branca);
     transition: color 0.3s ease;
 }
 
-.admin-link:hover {
-    color: #f0f0f0; 
+.navbar nav a:hover {
+    color: #ddd;
 }
 
-
-header nav a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
+/* Hero Section */
+.hero {
+    padding: 70px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, var(--cor-primaria), #0b2e26);
+    color: var(--cor-branca);
 }
 
-/* Estilo para a página de Gerenciar Categorias */
-.gerenciar-categorias-container {
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 0 15px;
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    animation: fadeInDown 0.8s ease;
 }
 
-.form-card, .tabela-card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.hero h2 span {
+    color: #90ee90;
+}
+
+.hero p {
+    font-size: 1.1rem;
     margin-bottom: 20px;
+    animation: fadeInUp 0.8s ease;
 }
 
-.form-card h3, .tabela-card h3 {
-    color: #1B4332;
-    margin-bottom: 15px;
+.btn-hero {
+    background: #fff;
+    color: var(--cor-primaria);
+    padding: 12px 22px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
 }
 
-.mensagem-sucesso {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    text-align: center;
+.btn-hero:hover {
+    background: #eee;
+    transform: scale(1.05);
 }
 
-.mensagem-erro {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    text-align: center;
+/* Animações */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+

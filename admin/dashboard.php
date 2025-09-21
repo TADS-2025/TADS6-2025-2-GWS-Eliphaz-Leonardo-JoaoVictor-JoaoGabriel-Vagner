@@ -1,37 +1,64 @@
 <?php
-include '../includes/cabecalho.php';
 session_start();
 include '../includes/conexao.php';
+include '../includes/cabecalho.php';
 
-if (!isset($_SESSION['usuario'])) {
+// Verificação de login
+if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit;
 }
-echo "<div class='dashboard-header'>";
-echo "<div class='dashboard-actions'>";
-echo "<a href='novo_post.php' class='button-link'>➕ Novo Post</a>";
-echo "<a href='gerenciar_categorias.php' class='button-link'>Gerenciar Categorias</a>";
-echo "<a href='logout.php' class='button-link secondary'>🚪 Sair</a>";
-echo "</div>";
-echo "</div>";
-echo "<hr>";
 
-$res = $conn->query("SELECT posts.id, posts.titulo, categorias.nome AS categoria FROM posts LEFT JOIN categorias ON posts.categoria_id = categorias.id ORDER BY posts.criado_em DESC");
+echo "<main class='dashboard'>";
+echo "<h2>Bem-vindo, " . htmlspecialchars($_SESSION['usuario_nome']) . "</h2>";
+echo "<p><a href='novo_post.php' class='btn-action btn-edit'>➕ Novo Post</a> | <a href='logout.php' class='btn-action btn-delete'>🚪 Sair</a></p>";
 
-echo "<table border='1' cellpadding='5'>
-<tr><th>Título</th><th>Categoria</th><th>Ações</th></tr>";
-while ($post = $res->fetch_assoc()) {
-    echo "<tr>
-        <td>{$post['titulo']}</td>
-        <td>{$post['categoria']}</td>
-        <td>
-            <a href='editar_post.php?id={$post['id']}'> Editar</a> | 
-            <a href='deletar_post.php?id={$post['id']}' onclick=\"return confirm('Tem certeza que deseja excluir?');\"> Deletar</a>
-        </td>
-    </tr>";
+// Mensagens de feedback
+if (isset($_GET['msg'])) {
+    if ($_GET['msg'] === 'sucesso') {
+        echo "<p class='alert alert-sucesso'>✅ Post publicado com sucesso!</p>";
+    } elseif ($_GET['msg'] === 'atualizado') {
+        echo "<p class='alert alert-sucesso'>✏️ Post atualizado com sucesso!</p>";
+    } elseif ($_GET['msg'] === 'deletado') {
+        echo "<p class='alert alert-sucesso'>🗑️ Post deletado com sucesso!</p>";
+    } elseif ($_GET['msg'] === 'erro') {
+        echo "<p class='alert alert-erro'>❌ Ocorreu um erro. Tente novamente.</p>";
+    }
 }
-echo "</table>";
 
+// Buscar posts
+$sql = "SELECT posts.id, posts.titulo, categorias.nome AS categoria 
+        FROM posts 
+        LEFT JOIN categorias ON posts.categoria_id = categorias.id 
+        ORDER BY posts.criado_em DESC";
 
-include '../includes/rodape.php'; 
+$res = $conn->query($sql);
+
+// Renderizar tabela
+if ($res && $res->num_rows > 0) {
+    echo "<table class='tabela-posts'>
+            <tr><th>Título</th><th>Categoria</th><th>Ações</th></tr>";
+    
+    while ($post = $res->fetch_assoc()) {
+        $titulo = htmlspecialchars($post['titulo']);
+        $categoria = htmlspecialchars($post['categoria'] ?? 'Sem categoria');
+        $id = (int)$post['id'];
+        
+        echo "<tr>
+                <td>$titulo</td>
+                <td>$categoria</td>
+                <td>
+                    <a href='editar_post.php?id=$id' class='btn-action btn-edit'>✏️ Editar</a> 
+                    <a href='deletar_post.php?id=$id' class='btn-action btn-delete' onclick=\"return confirm('Tem certeza que deseja excluir este post?');\">🗑️ Deletar</a>
+                </td>
+              </tr>";
+    }
+    echo "</table>";
+} else {
+    echo "<p>Nenhum post encontrado.</p>";
+}
+
+echo "</main>";
+
+include '../includes/rodape.php';
 ?>

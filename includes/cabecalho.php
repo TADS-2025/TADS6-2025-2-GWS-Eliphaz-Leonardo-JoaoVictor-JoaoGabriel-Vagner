@@ -7,10 +7,21 @@
 </head>
 <body>
 <header>
-  <h1><a href="/blog/index.php">Economia Blog</a></h1>
-  <nav>
-    <a href="/blog/index.php">Início</a>
-    <a href="/blog/admin/login.php">Admin</a>
-  </nav>
+  <!-- Navbar -->
+  <div class="navbar">
+    <h1 class="logo"><a href="/blog/index.php">Economia Blog</a></h1>
+    <nav>
+      <a href="/blog/index.php">Início</a>
+      <a href="/blog/admin/login.php">Admin</a>
+    </nav>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <h2>Bem-vindo ao <span>Economia Blog</span></h2>
+    <p>Artigos sobre programação, tecnologia e muito mais!</p>
+    <a href="/blog/index.php#posts" class="btn-hero">Explorar Posts ↓</a>
+  </div>
 </header>
-<main>
+
+<main id="posts">

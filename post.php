@@ -2,59 +2,50 @@
 include 'includes/conexao.php';
 include 'includes/cabecalho.php';
 
-$id = intval($_GET['id']);
+// Validar o ID recebido
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$sql = "SELECT * FROM posts WHERE id=$id";
-$result = $conn->query($sql);
+$sql = "SELECT posts.id, posts.titulo, posts.conteudo, posts.imagem, posts.autor, categorias.nome AS categoria, posts.criado_em 
+        FROM posts 
+        LEFT JOIN categorias ON posts.categoria_id = categorias.id
+        WHERE posts.id = ?";
 
-if ($result->num_rows > 0) {
-    $post = $result->fetch_assoc();
-    echo "<article>";
-    echo "<h2>" . $post['titulo'] . "</h2>";
-    echo "<p><em>Por " . $post['autor'] . " em " . $post['criado_em'] . "</em></p>";
-    echo "<img src='assets/img/" . $post['imagem'] . "' alt='Imagem do post' style='max-width:300px;'><br>";
-    echo "<p>" . $post['conteudo'] . "</p>";
-    echo "</article><hr>";
-} else {
-    echo "<p>Post não encontrado.</p>";
-}
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$post = $result->fetch_assoc();
 
-echo "<h3>Comentários</h3>";
+echo "<main class='blog-container'>";
 
-$sqlComentarios = "SELECT * FROM comentarios WHERE post_id=$id ORDER BY criado_em DESC";
-$resComentarios = $conn->query($sqlComentarios);
+if ($post) {
+    $titulo = htmlspecialchars($post['titulo']);
+    $autor = htmlspecialchars($post['autor']);
+    $categoria = htmlspecialchars($post['categoria'] ?? 'Sem categoria');
+    $conteudo = nl2br(htmlspecialchars($post['conteudo'])); // mantém quebras de linha
+    $imagem = htmlspecialchars($post['imagem']);
+    
+    // Data em estilo blog
+    setlocale(LC_TIME, 'pt_BR.utf8');
+    $data = strftime("%d de %B, %Y", strtotime($post['criado_em']));
 
-if ($resComentarios->num_rows > 0) {
-    while ($comentario = $resComentarios->fetch_assoc()) {
-        echo "<div class='comment-card'>";
-        echo "<p><strong>" . htmlspecialchars($comentario['autor']) . "</strong>: " . htmlspecialchars($comentario['conteudo']) . "</p>";
-        echo "<p class='comment-date'><em>" . $comentario['criado_em'] . "</em></p>";
-        echo "</div>";
+    echo "<article class='post-detalhe'>";
+    if (!empty($imagem)) {
+        echo "<div class='post-capa'><img src='assets/img/$imagem' alt='Imagem do post'></div>";
     }
+    echo "<div class='post-conteudo'>";
+    echo "  <span class='badge'>$categoria</span>";
+    echo "  <h1>$titulo</h1>";
+    echo "  <p class='meta'>Por $autor em $data</p>";
+    echo "  <div class='post-texto'>$conteudo</div>";
+    echo "  <p><a href='index.php' class='btn-read'>← Voltar ao Blog</a></p>";
+    echo "</div>";
+    echo "</article>";
 } else {
-    echo "<p>Sem comentários ainda.</p>";
+    echo "<p class='alert alert-erro'>❌ Post não encontrado.</p>";
 }
-?>
 
-<h4>Adicionar Comentário</h4>
-<div class="form-container">
-    <form method="post">
-        <label for="autor">Nome:</label>
-        <input type="text" name="autor" id="autor" required>
-        <label for="conteudo">Comentário:</label>
-        <textarea name="conteudo" id="conteudo" required></textarea>
-        <button type="submit">Enviar</button>
-    </form>
-</div>
-
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $autor = $conn->real_escape_string($_POST['autor']);
-    $conteudo = $conn->real_escape_string($_POST['conteudo']);
-    $sqlInsert = "INSERT INTO comentarios (post_id, autor, conteudo) VALUES ($id, '$autor', '$conteudo')";
-    $conn->query($sqlInsert);
-    header("Location: post.php?id=$id");
-}
+echo "</main>";
 
 include 'includes/rodape.php';
 ?>
