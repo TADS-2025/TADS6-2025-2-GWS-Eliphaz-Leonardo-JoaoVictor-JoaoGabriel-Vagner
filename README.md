@@ -61,3 +61,123 @@ No diretório `htdocs` do XAMPP, clone este repositório:
 cd C:\xampp\htdocs
 git clone https://github.com/TADS-2025/TADS6-2025-2-GWS-Eliphaz-Leonardo-JoaoVictor-JoaoGabriel-Vagner.git
 ```
+### 3. Configurar o Banco de Dados
+
+- Abra o **phpMyAdmin**.  
+- Crie um banco chamado **blog_db**.  
+- Importe o arquivo **schema.sql** (contendo as tabelas `posts`, `usuarios`, `categorias`).  
+
+---
+
+### 4. Configuração de Conexão
+
+Verifique o arquivo `includes/conexao.php` e ajuste caso necessário:  
+
+```php
+<?php
+$host = "localhost";
+$usuario = "root";
+$senha = "";
+$banco = "blog_db";
+
+$conn = new mysqli($host, $usuario, $senha, $banco);
+if ($conn->connect_error) {
+    die("Falha na conexão: " . $conn->connect_error);
+}
+?>
+```
+### 5. Executar o Projeto
+
+- No **XAMPP**, inicie o **Apache** e o **MySQL**.  
+- Abra no navegador:  
+
+```php
+http://localhost/blog
+```
+
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+- **PHP 8**  
+- **MySQL / phpMyAdmin**  
+- **HTML5 / CSS3 (responsivo)**  
+- **XAMPP**  
+
+---
+
+## 🎯 Resultado Esperado
+O blog permite que administradores gerenciem artigos sobre educação financeira e que visitantes explorem os posts organizados por categoria, com interface intuitiva e amigável.
+
+## 📂 Script do Banco de Dados (schema.sql)
+
+```sql
+-- ==========================================
+-- 📦 SCHEMA DO BLOG IF-INVESTE
+-- Banco: blog_db
+-- ==========================================
+
+-- Criar banco (caso ainda não exista)
+CREATE DATABASE IF NOT EXISTS blog_db;
+USE blog_db;
+
+-- ==========================
+-- Tabela de Usuários
+-- ==========================
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Inserir usuário admin (senha: 123456)
+-- OBS: A senha está em hash (password_hash no PHP)
+INSERT INTO usuarios (usuario, senha) VALUES
+('admin', '$2y$10$wH7lV6kQXx1B0qk4ZkJr2uQfMddwX7YbQ2fZlgCtO89t8ofgTGLjG'); 
+-- Senha original: 123456
+
+-- ==========================
+-- Tabela de Categorias
+-- ==========================
+CREATE TABLE IF NOT EXISTS categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL
+);
+
+-- Categorias iniciais
+INSERT INTO categorias (nome) VALUES
+('Planejamento Financeiro'),
+('Investimentos'),
+('Criptomoedas'),
+('Educação Financeira'),
+('Renda Passiva');
+
+-- ==========================
+-- Tabela de Posts
+-- ==========================
+CREATE TABLE IF NOT EXISTS posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(200) NOT NULL,
+    conteudo TEXT NOT NULL,
+    imagem VARCHAR(255),
+    autor VARCHAR(100) NOT NULL,
+    categoria_id INT,
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
+);
+
+-- Posts iniciais
+INSERT INTO posts (titulo, conteudo, imagem, autor, categoria_id) VALUES
+('Bem-vindo ao Blog IF-Investe',
+ 'Este é o primeiro post do nosso blog de Educação Financeira! Aqui vamos compartilhar dicas, artigos e conteúdos para ajudar você a organizar suas finanças e investir melhor.',
+ 'post1.jpg', 'Admin', 1),
+
+('Dicas de Economia no Dia a Dia',
+ 'Pequenas mudanças de hábito podem gerar grandes economias. Neste artigo, mostramos como cortar gastos desnecessários e direcionar o dinheiro para seus objetivos.',
+ 'post2.jpg', 'Vagner', 2),
+
+('Introdução ao Mundo das Criptomoedas',
+ 'As criptomoedas vêm ganhando destaque no mercado. Mas como começar com segurança? Aqui apresentamos os conceitos básicos e os cuidados essenciais.',
+ 'post3.jpg', 'Leonardo', 3);
+```
