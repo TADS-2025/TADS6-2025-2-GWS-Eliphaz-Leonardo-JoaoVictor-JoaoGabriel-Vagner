@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>IF-Investe Blog</title>
-  <!-- CSS agora busca sempre a partir da raiz -->
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
