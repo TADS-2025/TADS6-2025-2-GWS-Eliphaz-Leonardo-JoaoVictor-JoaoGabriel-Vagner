@@ -1,9 +1,19 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 include '../includes/conexao.php';
 include '../includes/cabecalho.php';
 
 $erro = "";
+
+// Se já está logado → manda pro dashboard direto
+if (isset($_SESSION['usuario_id'])) {
+    header("Location: dashboard.php");
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
@@ -20,10 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
 
-            // Confere tanto hash moderno quanto md5 (apenas para compatibilidade)
+            // Confere tanto hash moderno quanto md5 (compatibilidade)
             if (password_verify($senha, $user['senha']) || $user['senha'] === md5($senha)) {
                 $_SESSION['usuario_id'] = $user['id'];
                 $_SESSION['usuario_nome'] = $user['nome'];
+
+                // DEBUG
+                echo "<p style='color:green'>Sessão criada: {$_SESSION['usuario_nome']} (ID {$_SESSION['usuario_id']})</p>";
+
                 header("Location: dashboard.php");
                 exit;
             } else {
