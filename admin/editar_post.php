@@ -1,7 +1,6 @@
 <?php
 session_start();
 include '../includes/conexao.php';
-include '../includes/cabecalho.php'; 
 
 // Verificação de login
 if (!isset($_SESSION['usuario_id'])) {
@@ -19,6 +18,7 @@ $stmt->execute();
 $post = $stmt->get_result()->fetch_assoc();
 
 if (!$post) {
+    include '../includes/cabecalho.php';
     echo "<p style='color:red;'>Post não encontrado.</p>";
     include '../includes/rodape.php';
     exit;
@@ -30,7 +30,7 @@ $res_categorias = $conn->query("SELECT * FROM categorias ORDER BY nome ASC");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titulo = trim($_POST['titulo']);
     $conteudo = trim($_POST['conteudo']);
-    $autor = $_SESSION['usuario_nome']; // pega do usuário logado
+    $autor = $_SESSION['usuario_nome']; 
     $categoria_id = intval($_POST['categoria']);
     $imagem = $post['imagem']; // mantém a atual por padrão
 
@@ -58,9 +58,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: dashboard.php?msg=atualizado");
         exit;
     } else {
+        include '../includes/cabecalho.php';
         echo "<p style='color:red;'>Erro ao atualizar o post: " . $conn->error . "</p>";
+        include '../includes/rodape.php';
+        exit;
     }
 }
+
+// 🔽 Só inclui HTML depois de toda a lógica
+include '../includes/cabecalho.php';
 ?>
 
 <main class="dashboard">
@@ -95,6 +101,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </main>
 
-<?php
-include '../includes/rodape.php'; 
-?>
+<?php include '../includes/rodape.php'; ?>
