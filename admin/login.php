@@ -1,7 +1,7 @@
 <?php
 session_start();
-include '../includes/conexao.php';
-include '../includes/cabecalho.php';
+include '/includes/conexao.php';
+include '/includes/cabecalho.php';
 
 $erro = "";
 
