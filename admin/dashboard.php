@@ -2,13 +2,20 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 session_start();
 include '../includes/conexao.php';
 include '../includes/cabecalho.php';
 
+// DEBUG Sessão
+echo "<pre style='color:blue'>DEBUG SESSION: ";
+print_r($_SESSION);
+echo "</pre>";
+
 // Verificação de login
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.php");
+    echo "<p style='color:red'>⚠️ Nenhuma sessão encontrada. Voltando para login...</p>";
+    header("Refresh: 2; URL=login.php");
     exit;
 }
 
@@ -64,4 +71,3 @@ if ($res && $res->num_rows > 0) {
 echo "</main>";
 
 include '../includes/rodape.php';
-?>
