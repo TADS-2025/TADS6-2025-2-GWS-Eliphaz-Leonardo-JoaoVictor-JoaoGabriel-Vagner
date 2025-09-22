@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Primeiro, buscar o post para saber se existe e pegar a imagem
+// Buscar post
 $sql = "SELECT imagem FROM posts WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
@@ -19,7 +19,7 @@ $result = $stmt->get_result();
 $post = $result->fetch_assoc();
 
 if ($post) {
-    // Apagar do banco
+    // Deletar do banco
     $sql = "DELETE FROM posts WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
@@ -30,12 +30,19 @@ if ($post) {
             unlink("../assets/img/" . $post['imagem']);
         }
 
+        // 🔥 Redireciona de volta para o dashboard com mensagem
         header("Location: dashboard.php?msg=deletado");
         exit;
     } else {
-        echo "<p style='color:red;'>Erro ao deletar o post: " . $conn->error . "</p>";
+        // Só mostra erro se falhar
+        include '../includes/cabecalho.php';
+        echo "<main class='dashboard'><p class='alert alert-erro'>❌ Erro ao deletar o post: " . $conn->error . "</p></main>";
+        include '../includes/rodape.php';
+        exit;
     }
 } else {
-    echo "<p style='color:red;'>Post não encontrado.</p>";
+    include '../includes/cabecalho.php';
+    echo "<main class='dashboard'><p class='alert alert-erro'>⚠️ Post não encontrado.</p></main>";
+    include '../includes/rodape.php';
+    exit;
 }
-?>
