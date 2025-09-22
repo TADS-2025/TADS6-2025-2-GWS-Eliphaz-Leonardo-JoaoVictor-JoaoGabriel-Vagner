@@ -13,7 +13,7 @@
   <div class="navbar">
     <h1 class="logo">
       <a href="/index.php">
-        <img src="img/ifinveste.png" alt="Logo IF-Investe" height="60">
+        <img src="/img/ifinveste.png" alt="Logo IF-Investe" height="60">
       </a>
     </h1>
 
