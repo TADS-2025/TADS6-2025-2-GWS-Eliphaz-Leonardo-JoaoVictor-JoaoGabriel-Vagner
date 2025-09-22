@@ -92,7 +92,7 @@ if ($conn->connect_error) {
 - Abra no navegador:  
 
 ```php
-http://localhost/blog
+http://localhost/TADS6-2025-2-GWS-Eliphaz-Leonardo-JoaoVictor-JoaoGabriel-Vagner
 ```
 
 
