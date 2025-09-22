@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           local-dir: ./           # se seu código todo for pra raiz
-          server-dir: /vagnerferreiralimaju1756074880000.0790738.meusitehostgator.com.br/  # ajuste se for outra pasta no HostGator
+          server-dir: /  # ajuste se for outra pasta no HostGator
           # excluir coisas desnecessárias, se quiser:
           exclude: |
             **/.git*
