@@ -1,7 +1,6 @@
 <?php
 session_start();
 include '../includes/conexao.php';
-include '../includes/cabecalho.php';
 
 // Verificar login
 if (!isset($_SESSION['usuario_id'])) {
@@ -38,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("ssssi", $titulo, $conteudo, $imagem, $autor, $categoria_id);
 
     if ($stmt->execute()) {
+        // ✅ Redireciona sem erro, pois ainda não foi enviado HTML
         header("Location: dashboard.php?msg=sucesso");
         exit;
     } else {
@@ -46,6 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt->close();
 }
+
+// 🔽 Só inclui HTML depois de toda a lógica PHP
+include '../includes/cabecalho.php';
 ?>
 
 <main class="dashboard">
@@ -74,6 +77,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </main>
 
-<?php
-include '../includes/rodape.php';
-?>
+<?php include '../includes/rodape.php'; ?>
