@@ -1,15 +1,15 @@
 <?php
-$host = "localhost";
-$usuario = "root";     // Em produção, crie outro usuário (ex.: blog_user)
-$senha = "";           // Defina senha em produção!
-$banco = "blog_db";
+$host    = "localhost"; 
+$usuario = "vagn5934_vagner";          // 👈 usuário MySQL criado no cPanel
+$senha   = "202018vA?";                // 👈 senha definida no cPanel
+$banco   = "vagn5934_vagn5934_blog";   // 👈 nome do banco criado no cPanel
 
 // Criar conexão
 $conn = new mysqli($host, $usuario, $senha, $banco);
 
 // Verificar erros
 if ($conn->connect_error) {
-    error_log("Erro de conexão: " . $conn->connect_error); // Loga no servidor
+    error_log("Erro de conexão: " . $conn->connect_error); 
     die("⚠️ Erro ao conectar ao banco de dados. Tente novamente mais tarde.");
 }
 
