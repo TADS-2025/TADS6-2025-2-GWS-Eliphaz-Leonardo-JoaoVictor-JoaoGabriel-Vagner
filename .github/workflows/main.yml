@@ -3,7 +3,7 @@ name: 🚀 Deploy PHP para HostGator
 on:
   push:
     branches:
-      - vagner  # dispara quando fizer push na branch main
+      - main  # dispara quando fizer push na branch main
 
 jobs:
   deploy:
