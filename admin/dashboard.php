@@ -7,11 +7,6 @@ session_start();
 include '../includes/conexao.php';
 include '../includes/cabecalho.php';
 
-// DEBUG Sessão
-echo "<pre style='color:blue'>DEBUG SESSION: ";
-print_r($_SESSION);
-echo "</pre>";
-
 // Verificação de login
 if (!isset($_SESSION['usuario_id'])) {
     echo "<p style='color:red'>⚠️ Nenhuma sessão encontrada. Voltando para login...</p>";
