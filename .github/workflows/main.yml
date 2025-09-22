@@ -1,25 +1,30 @@
-name: 🚀 Deploy PHP para HostGator
+name: 🚀 Deploy PHP para HostGator via FTP
 
 on:
   push:
     branches:
-      - main  # dispara quando fizer push na branch main
+      - main
 
 jobs:
-  deploy:
+  ftp-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 📥 Checkout do código
+      - name: Checkout do repositório
         uses: actions/checkout@v3
 
-      - name: 📂 Deploy via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          port: 22
+          server: ftp.tbfood.com.br
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local_path: "./"
-          remote_path: "/home2/vagn5934/vagnerferreiralimaju1756074880000.0/vagner"
-          sftp_only: true
+          port: 21
+          local-dir: ./           # se seu código todo for pra raiz
+          server-dir: /public_html  # ajuste se for outra pasta no HostGator
+          # excluir coisas desnecessárias, se quiser:
+          exclude: |
+            **/.git*
+            **/.github*
+            node_modules/
+            .env
+            .env.local
