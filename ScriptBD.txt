@@ -1,0 +1,37 @@
+CREATE DATABASE blog_db;
+USE blog_db;
+
+-- Usuários administradores
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  usuario VARCHAR(50) NOT NULL,
+  senha VARCHAR(255) NOT NULL
+);
+
+-- Categorias
+CREATE TABLE categorias (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL
+);
+
+-- Posts
+CREATE TABLE posts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  titulo VARCHAR(200) NOT NULL,
+  conteudo TEXT NOT NULL,
+  imagem VARCHAR(200),
+  autor VARCHAR(100),
+  categoria_id INT,
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+);
+
+-- Comentários
+CREATE TABLE comentarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  post_id INT,
+  autor VARCHAR(100),
+  conteudo TEXT,
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
+);
