@@ -523,3 +523,48 @@ a:hover {
     to { opacity: 1; transform: translateY(0); }
 }
 
+.form-comentario {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-comentario input,
+.form-comentario textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.form-comentario button {
+    background: var(--cor-primaria);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.form-comentario button:hover {
+    background: var(--cor-primaria-hover);
+}
+
+.comentarios {
+    margin-top: 30px;
+}
+
+.comentarios h3 {
+    margin-bottom: 10px;
+    color: var(--cor-primaria);
+}
+
+.comentario {
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    box-shadow: var(--sombra);
+}
