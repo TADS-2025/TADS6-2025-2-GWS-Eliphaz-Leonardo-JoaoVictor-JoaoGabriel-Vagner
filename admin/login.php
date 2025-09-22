@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 
 session_start();
 include '../includes/conexao.php';
-include '../includes/cabecalho.php';
 
 $erro = "";
 
@@ -35,9 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['usuario_id'] = $user['id'];
                 $_SESSION['usuario_nome'] = $user['nome'];
 
-                // DEBUG
-                echo "<p style='color:green'>Sessão criada: {$_SESSION['usuario_nome']} (ID {$_SESSION['usuario_id']})</p>";
-
                 header("Location: dashboard.php");
                 exit;
             } else {
@@ -52,6 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
+<?php include '../includes/cabecalho.php'; ?>
 
 <div class="login-container">
     <h2>Login do Administrador</h2>
